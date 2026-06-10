@@ -46,8 +46,15 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-text">
-          <h1>Shop the Best Deals</h1>
-          <p>Electronics, Fashion, Home & Sports — delivered to your door</p>
+          <div className="hero-eyebrow">Premium Collection 2026</div>
+          <h1>Shop the <em>Best Deals</em><br />in Style</h1>
+          <p>Electronics, Fashion, Home &amp; Sports — delivered to your door with elegance.</p>
+
+          <div className="hero-divider">
+            <div className="hero-divider-line" />
+            <div className="hero-divider-diamond" />
+          </div>
+
           <form className="hero-search" onSubmit={e => e.preventDefault()}>
             <input
               type="text" placeholder="Search for products..."
@@ -56,10 +63,31 @@ export default function Home() {
             <button type="submit" className="btn btn-primary">Search</button>
           </form>
         </div>
+
         <div className="hero-badges">
-          {['Free Delivery', 'Easy Returns', 'Secure Payment', '24/7 Support'].map(b => (
-            <span key={b} className="hero-badge">✓ {b}</span>
+          {[
+            { icon: '✦', label: 'Free Delivery' },
+            { icon: '✦', label: 'Easy Returns' },
+            { icon: '✦', label: 'Secure Payment' },
+            { icon: '✦', label: '24/7 Support' },
+          ].map(b => (
+            <span key={b.label} className="hero-badge">{b.icon} {b.label}</span>
           ))}
+        </div>
+
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <span className="hero-stat-num">12+</span>
+            <span className="hero-stat-label">Products</span>
+          </div>
+          <div className="hero-stat">
+            <span className="hero-stat-num">4.5★</span>
+            <span className="hero-stat-label">Avg Rating</span>
+          </div>
+          <div className="hero-stat">
+            <span className="hero-stat-num">1K+</span>
+            <span className="hero-stat-label">Happy Buyers</span>
+          </div>
         </div>
       </section>
 
