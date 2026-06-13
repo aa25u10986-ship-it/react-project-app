@@ -1,99 +1,146 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { products } from '../data/products'
 import { useCartStore } from '../store/cartStore'
-import './ProductDetail.css'
 
 export default function ProductDetail() {
-  const { id }      = useParams()
-  const product     = products.find(p => p.id === Number(id))
-  const addToCart   = useCartStore(s => s.addToCart)
-  const [qty, setQty] = useState(1)
+  const { id }    = useParams()
+  const product   = products.find(p => p.id === Number(id))
+  const addToCart = useCartStore(s => s.addToCart)
+  const [qty, setQty]     = useState(1)
   const [added, setAdded] = useState(false)
 
   if (!product) return (
-    <div className="container empty-state" style={{minHeight:'60vh'}}>
+    <div className="container empty-state" style={{ minHeight:'70vh' }}>
       <span className="icon">😕</span>
-      <p>Product not found</p>
+      <h2>Product not found</h2>
+      <p>This product doesn't exist or was removed.</p>
       <Link to="/" className="btn btn-primary">Back to Shop</Link>
     </div>
   )
 
-  const stars = '★'.repeat(Math.round(product.rating)) + '☆'.repeat(5 - Math.round(product.rating))
+  const stars   = Math.round(product.rating)
   const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0,4)
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) addToCart(product)
     setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
+    setTimeout(() => setAdded(false), 2200)
   }
 
   return (
-    <div className="container" style={{ padding: '28px 20px 48px' }}>
+    <div className="container" style={{ paddingTop:32, paddingBottom:64 }}>
 
       {/* Breadcrumb */}
-      <div className="breadcrumb">
-        <Link to="/">Home</Link> / <span>{product.category}</span> / <span>{product.title}</span>
-      </div>
+      <motion.nav initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }}
+        style={{ display:'flex', alignItems:'center', gap:6, fontSize:13, color:'rgba(200,180,255,0.55)', marginBottom:28, flexWrap:'wrap' }}
+      >
+        <Link to="/" style={{ color:'var(--gold)', fontWeight:500 }}>Home</Link>
+        <span>/</span>
+        <span style={{ color:'rgba(200,180,255,0.55)' }}>{product.category}</span>
+        <span>/</span>
+        <span style={{ color:'rgba(220,200,255,0.8)', fontWeight:500 }}>{product.title}</span>
+      </motion.nav>
 
-      {/* Main */}
-      <div className="pd-main">
-        <div className="pd-image">
-          <img src={product.image} alt={product.title}/>
-        </div>
-        <div className="pd-info">
-          <span className="badge badge-primary">{product.category}</span>
-          <h1 className="pd-title">{product.title}</h1>
-          <div className="pd-rating">
-            <span className="stars">{stars}</span>
-            <span>{product.rating} ({product.reviews} reviews)</span>
+      {/* Main grid */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap:40, marginBottom:56, alignItems:'start' }}>
+
+        {/* Image */}
+        <motion.div initial={{ opacity:0, x:-30 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.55 }}>
+          <div style={{ position:'relative', borderRadius:20, overflow:'hidden', background:'rgba(8,2,35,0.6)', border:'1px solid rgba(245,200,66,0.15)', aspectRatio:'1' }}>
+            <img src={product.image} alt={product.title} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg, transparent 60%, rgba(245,200,66,0.08))', pointerEvents:'none' }} />
           </div>
-          <p className="pd-price">₹{product.price.toLocaleString('en-IN')}</p>
-          <p className="pd-desc">{product.description}</p>
+        </motion.div>
+
+        {/* Info */}
+        <motion.div initial={{ opacity:0, x:30 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.55, delay:0.1 }}
+          style={{ display:'flex', flexDirection:'column', gap:18 }}
+        >
+          <span className="badge badge-primary" style={{ width:'fit-content' }}>{product.category}</span>
+
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:'clamp(22px,4vw,34px)', fontWeight:800, lineHeight:1.15, letterSpacing:'-0.5px', color:'#fff' }}>
+            {product.title}
+          </h1>
+
+          {/* Rating */}
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            <span style={{ color:'var(--gold)', fontSize:16, letterSpacing:2 }}>{'★'.repeat(stars)}{'☆'.repeat(5-stars)}</span>
+            <span style={{ fontSize:14, color:'rgba(200,180,255,0.65)' }}>{product.rating} · {product.reviews} reviews</span>
+          </div>
+
+          <div style={{ height:1, background:'linear-gradient(90deg, rgba(245,200,66,0.2), transparent)' }} />
+
+          {/* Price */}
+          <div>
+            <p style={{ fontSize:'clamp(28px,5vw,40px)', fontWeight:800, color:'var(--gold)', fontFamily:"'Syne',sans-serif", lineHeight:1 }}>
+              ₹{product.price.toLocaleString('en-IN')}
+            </p>
+            <p style={{ fontSize:12, color:'rgba(34,197,94,0.85)', marginTop:5, fontWeight:600 }}>✓ In Stock · Free delivery on orders over ₹999</p>
+          </div>
+
+          {/* Description */}
+          <p style={{ fontSize:15, color:'rgba(220,200,255,0.7)', lineHeight:1.7 }}>{product.description}</p>
 
           {/* Qty */}
-          <div className="pd-qty">
-            <label>Quantity</label>
+          <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+            <span style={{ fontSize:13, fontWeight:600, color:'rgba(200,180,255,0.7)', textTransform:'uppercase', letterSpacing:0.5 }}>Qty</span>
             <div className="qty-control">
-              <button onClick={() => setQty(q => Math.max(1, q-1))}>−</button>
+              <button onClick={() => setQty(q => Math.max(1,q-1))}>−</button>
               <span>{qty}</span>
               <button onClick={() => setQty(q => q+1)}>+</button>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="pd-actions">
-            <button className="btn btn-primary" onClick={handleAdd} style={{flex:1}}>
+          <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
+            <motion.button
+              whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }}
+              onClick={handleAdd}
+              style={{
+                flex:1, minWidth:140, padding:'14px 20px', borderRadius:12, border:'none',
+                background: added ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,var(--gold),var(--gold-d))',
+                color:'#0a0020', fontSize:15, fontWeight:700, cursor:'pointer',
+                transition:'background 0.25s', boxShadow:'0 6px 24px rgba(245,200,66,0.3)',
+              }}
+            >
               {added ? '✓ Added to Cart!' : '🛒 Add to Cart'}
-            </button>
-            <Link to="/cart" className="btn btn-outline" style={{flex:1, textAlign:'center'}}>
-              Go to Cart
-            </Link>
+            </motion.button>
+            <Link to="/cart" className="btn btn-outline" style={{ flex:1, minWidth:120 }}>View Cart →</Link>
           </div>
 
           {/* Trust badges */}
-          <div className="trust-badges">
+          <div style={{ display:'flex', flexWrap:'wrap', gap:8, paddingTop:4 }}>
             {['Free Delivery','Easy Returns','Secure Payment'].map(b => (
-              <span key={b} className="trust-badge">✓ {b}</span>
+              <span key={b} style={{ fontSize:12, color:'rgba(34,197,94,0.85)', fontWeight:600, background:'rgba(34,197,94,0.1)', padding:'4px 12px', borderRadius:20, border:'1px solid rgba(34,197,94,0.2)' }}>
+                ✓ {b}
+              </span>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Related */}
+      {/* Related products */}
       {related.length > 0 && (
-        <section className="pd-related">
-          <h2>Related Products</h2>
-          <div className="related-grid">
+        <motion.section initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
+          <h2 className="section-heading" style={{ marginBottom:20 }}>Related Products</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(160px,100%), 1fr))', gap:14 }}>
             {related.map(p => (
-              <Link key={p.id} to={`/product/${p.id}`} className="related-card">
-                <img src={p.image} alt={p.title}/>
-                <p className="related-title">{p.title}</p>
-                <p className="related-price">₹{p.price.toLocaleString('en-IN')}</p>
+              <Link key={p.id} to={`/product/${p.id}`} style={{ textDecoration:'none' }}>
+                <motion.div whileHover={{ y:-4, boxShadow:'0 12px 32px rgba(0,0,0,0.4)' }}
+                  style={{ background:'rgba(8,2,35,0.75)', border:'1px solid rgba(245,200,66,0.13)', borderRadius:14, overflow:'hidden' }}
+                >
+                  <img src={p.image} alt={p.title} style={{ width:'100%', aspectRatio:'1', objectFit:'cover' }} />
+                  <div style={{ padding:'10px 12px' }}>
+                    <p style={{ fontSize:13, fontWeight:600, color:'rgba(240,232,255,0.9)', marginBottom:4, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden', lineHeight:1.4 }}>{p.title}</p>
+                    <p style={{ fontSize:14, fontWeight:800, color:'var(--gold)' }}>₹{p.price.toLocaleString('en-IN')}</p>
+                  </div>
+                </motion.div>
               </Link>
             ))}
           </div>
-        </section>
+        </motion.section>
       )}
     </div>
   )
