@@ -1,347 +1,86 @@
 /* ================================================
    LOADING SCREEN — Literary Dark Cinematic Theme
-
+   ================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
 
 .loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #0a0a0a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  animation: screenFadeOut 0.8s ease 3.2s forwards;
+  position: fixed; inset: 0; z-index: 9999; background: #0a0a0a;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  overflow: hidden; animation: screenFadeOut 0.8s ease 3.2s forwards;
 }
-
-/* ── Particle / noise texture overlay ── */
 .loading-screen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 90, 43, 0.06) 0%, transparent 60%);
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139,90,43,0.06) 0%, transparent 60%);
   pointer-events: none;
 }
-
-/* ── Decorative horizontal rule lines ── */
 .loading-screen::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  border: 1px solid rgba(212, 175, 55, 0.06);
-  border-radius: 50%;
-  animation: ringPulse 2s ease-in-out infinite;
-  pointer-events: none;
+  content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 600px; border: 1px solid rgba(212,175,55,0.06); border-radius: 50%;
+  animation: ringPulse 2s ease-in-out infinite; pointer-events: none;
 }
-
 @keyframes ringPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.4; }
-  50%       { transform: translate(-50%, -50%) scale(1.05); opacity: 0.1; }
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.4; }
+  50%      { transform: translate(-50%,-50%) scale(1.05); opacity: 0.1; }
 }
-
-/* ── Floating book pages particles ── */
 .ls-particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: rgba(212, 175, 55, 0.6);
-  animation: floatParticle var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: rgba(212,175,55,0.6);
+  animation: floatParticle var(--dur,4s) ease-in-out var(--delay,0s) infinite;
 }
-
 @keyframes floatParticle {
   0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
   20%  { opacity: 1; }
   80%  { opacity: 0.6; }
-  100% { transform: translateY(-120px) translateX(var(--dx, 20px)) scale(0.3); opacity: 0; }
+  100% { transform: translateY(-120px) translateX(var(--dx,20px)) scale(0.3); opacity: 0; }
 }
-
-/* ── Central content wrapper ── */
-.ls-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  text-align: center;
-  z-index: 2;
-}
-
-/* ── Ornamental top line ── */
-.ls-ornament {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 28px;
-  animation: fadeSlideDown 0.8s ease 0.2s both;
-}
-
-.ls-ornament-line {
-  height: 1px;
-  width: 80px;
-  background: linear-gradient(90deg, transparent, #d4af37, transparent);
-}
-
-.ls-ornament-diamond {
-  width: 8px;
-  height: 8px;
-  background: #d4af37;
-  transform: rotate(45deg);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
-  animation: diamondPulse 1.5s ease-in-out infinite;
-}
-
+.ls-content { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; z-index: 2; }
+.ls-ornament { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; animation: fadeSlideDown 0.8s ease 0.2s both; }
+.ls-ornament-line { height: 1px; width: 80px; background: linear-gradient(90deg,transparent,#d4af37,transparent); }
+.ls-ornament-diamond { width: 8px; height: 8px; background: #d4af37; transform: rotate(45deg); box-shadow: 0 0 12px rgba(212,175,55,0.6); animation: diamondPulse 1.5s ease-in-out infinite; }
 @keyframes diamondPulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
-  50%       { box-shadow: 0 0 24px rgba(212, 175, 55, 1), 0 0 40px rgba(212, 175, 55, 0.4); }
+  0%,100% { box-shadow: 0 0 12px rgba(212,175,55,0.6); }
+  50%      { box-shadow: 0 0 24px rgba(212,175,55,1), 0 0 40px rgba(212,175,55,0.4); }
 }
+.ls-icon { font-size: 52px; margin-bottom: 16px; animation: fadeSlideDown 0.8s ease 0.4s both; filter: drop-shadow(0 0 20px rgba(212,175,55,0.4)); }
+.ls-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(42px,7vw,72px); font-weight: 900; letter-spacing: -1px; line-height: 1.05; color: #f5f0e8; margin-bottom: 6px; animation: fadeSlideDown 0.9s ease 0.5s both; }
+.ls-title span { color: #d4af37; font-style: italic; display: inline-block; animation: goldShimmer 3s ease infinite; background: linear-gradient(90deg,#d4af37,#f5d98b,#c8973e,#d4af37); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+@keyframes goldShimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.ls-subtitle { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(14px,2.5vw,18px); font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: rgba(212,175,55,0.7); margin-bottom: 48px; animation: fadeSlideDown 0.9s ease 0.7s both; }
+.ls-quote { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(13px,2vw,16px); font-style: italic; color: rgba(245,240,232,0.45); max-width: 380px; line-height: 1.8; margin-bottom: 52px; animation: fadeSlideDown 0.9s ease 0.9s both; }
+.ls-progress-track { width: 260px; height: 1px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 16px; animation: fadeSlideDown 0.9s ease 1s both; }
+.ls-progress-fill { height: 100%; background: linear-gradient(90deg,#d4af37,#f5d98b,#d4af37); background-size: 200% auto; border-radius: 2px; animation: progressGrow 2.8s cubic-bezier(0.4,0,0.2,1) 0.8s forwards, shimmerBar 1.5s linear infinite; width: 0%; }
+@keyframes progressGrow { 0%{width:0%} 30%{width:35%} 60%{width:65%} 85%{width:88%} 100%{width:100%} }
+@keyframes shimmerBar { 0%{background-position:200% center} 100%{background-position:0% center} }
+.ls-dots { display: flex; gap: 6px; animation: fadeSlideDown 0.9s ease 1.1s both; }
+.ls-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(212,175,55,0.5); animation: dotBounce 1.2s ease-in-out infinite; }
+.ls-dot:nth-child(1){animation-delay:0s} .ls-dot:nth-child(2){animation-delay:0.2s} .ls-dot:nth-child(3){animation-delay:0.4s}
+@keyframes dotBounce { 0%,80%,100%{transform:scale(1);opacity:0.4} 40%{transform:scale(1.6);opacity:1;background:#d4af37} }
+.ls-corner { position: absolute; width: 60px; height: 60px; opacity: 0.2; animation: fadeSlideDown 1s ease 0.3s both; }
+.ls-corner--tl{top:40px;left:40px;border-top:1px solid #d4af37;border-left:1px solid #d4af37}
+.ls-corner--tr{top:40px;right:40px;border-top:1px solid #d4af37;border-right:1px solid #d4af37}
+.ls-corner--bl{bottom:40px;left:40px;border-bottom:1px solid #d4af37;border-left:1px solid #d4af37}
+.ls-corner--br{bottom:40px;right:40px;border-bottom:1px solid #d4af37;border-right:1px solid #d4af37}
+@keyframes fadeSlideDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes screenFadeOut { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.04);pointer-events:none} }
 
-/* ── Brand Icon ── */
-.ls-icon {
-  font-size: 52px;
-  margin-bottom: 16px;
-  animation: fadeSlideDown 0.8s ease 0.4s both;
-  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
-}
+/* Tap prompt */
+.ls-tap-prompt { position:absolute; bottom:48px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; z-index:10; animation:tapPulse 1.4s ease-in-out infinite; pointer-events:none; }
+.ls-tap-icon { font-size:32px; filter:drop-shadow(0 0 12px rgba(255,220,50,0.8)); }
+.ls-tap-text { font-family:'Cormorant Garamond',Georgia,serif; font-size:14px; letter-spacing:3px; text-transform:uppercase; color:rgba(212,175,55,0.85); }
+@keyframes tapPulse { 0%,100%{opacity:1;transform:translateX(-50%) translateY(0)} 50%{opacity:0.5;transform:translateX(-50%) translateY(-6px)} }
 
-/* ── Main title ── */
-.ls-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(42px, 7vw, 72px);
-  font-weight: 900;
-  letter-spacing: -1px;
-  line-height: 1.05;
-  color: #f5f0e8;
-  margin-bottom: 6px;
-  animation: fadeSlideDown 0.9s ease 0.5s both;
-}
+/* Thunder */
+.ls-thunder-overlay { position:absolute; inset:0; background:rgba(180,200,255,0); pointer-events:none; transition:background 0.05s ease; z-index:1; }
+.ls-thunder-overlay.active { background:rgba(180,200,255,0.18); transition:background 0s; }
+.ls-flash { animation:screenFadeOut 0.8s ease 3.2s forwards, thunderFlash 0.12s ease !important; }
+@keyframes thunderFlash { 0%{filter:brightness(1)} 30%{filter:brightness(2.5) saturate(0.4)} 60%{filter:brightness(1.6)} 100%{filter:brightness(1)} }
+.ls-lightning-container { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:1; }
+.ls-bolt { position:absolute; top:-10px; opacity:0; animation:boltStrike var(--bolt-dur,0.12s) ease-out var(--bolt-delay,0s) 3 both; filter:drop-shadow(0 0 8px #ffe066) drop-shadow(0 0 20px rgba(180,140,255,0.8)); }
+@keyframes boltStrike { 0%{opacity:0;transform:scaleY(0);transform-origin:top} 10%{opacity:1;transform:scaleY(1);transform-origin:top} 60%{opacity:0.8;transform:scaleY(1);transform-origin:top} 100%{opacity:0;transform:scaleY(1);transform-origin:top} }
 
-.ls-title span {
-  color: #d4af37;
-  font-style: italic;
-  display: inline-block;
-  animation: goldShimmer 3s ease infinite;
-  background: linear-gradient(90deg, #d4af37, #f5d98b, #c8973e, #d4af37);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-@keyframes goldShimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
-
-/* ── Subtitle ── */
-.ls-subtitle {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(14px, 2.5vw, 18px);
-  font-weight: 300;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(212, 175, 55, 0.7);
-  margin-bottom: 48px;
-  animation: fadeSlideDown 0.9s ease 0.7s both;
-}
-
-/* ── Quote ── */
-.ls-quote {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(13px, 2vw, 16px);
-  font-style: italic;
-  color: rgba(245, 240, 232, 0.45);
-  max-width: 380px;
-  line-height: 1.8;
-  margin-bottom: 52px;
-  animation: fadeSlideDown 0.9s ease 0.9s both;
-}
-
-/* ── Progress bar track ── */
-.ls-progress-track {
-  width: 260px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  animation: fadeSlideDown 0.9s ease 1s both;
-  position: relative;
-}
-
-.ls-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #d4af37, #f5d98b, #d4af37);
-  background-size: 200% auto;
-  border-radius: 2px;
-  animation:
-    progressGrow 2.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards,
-    shimmerBar 1.5s linear infinite;
-  width: 0%;
-}
-
-@keyframes progressGrow {
-  0%   { width: 0%; }
-  30%  { width: 35%; }
-  60%  { width: 65%; }
-  85%  { width: 88%; }
-  100% { width: 100%; }
-}
-
-@keyframes shimmerBar {
-  0%   { background-position: 200% center; }
-  100% { background-position: 0% center; }
-}
-
-/* ── Loading dots ── */
-.ls-dots {
-  display: flex;
-  gap: 6px;
-  animation: fadeSlideDown 0.9s ease 1.1s both;
-}
-
-.ls-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(212, 175, 55, 0.5);
-  animation: dotBounce 1.2s ease-in-out infinite;
-}
-
-.ls-dot:nth-child(1) { animation-delay: 0s; }
-.ls-dot:nth-child(2) { animation-delay: 0.2s; }
-.ls-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dotBounce {
-  0%, 80%, 100% { transform: scale(1);   opacity: 0.4; }
-  40%            { transform: scale(1.6); opacity: 1;   background: #d4af37; }
-}
-
-/* ── Corner decorations ── */
-.ls-corner {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  opacity: 0.2;
-  animation: fadeSlideDown 1s ease 0.3s both;
-}
-
-.ls-corner--tl { top: 40px;  left: 40px;  border-top: 1px solid #d4af37; border-left: 1px solid #d4af37; }
-.ls-corner--tr { top: 40px;  right: 40px; border-top: 1px solid #d4af37; border-right: 1px solid #d4af37; }
-.ls-corner--bl { bottom: 40px; left: 40px;  border-bottom: 1px solid #d4af37; border-left: 1px solid #d4af37; }
-.ls-corner--br { bottom: 40px; right: 40px; border-bottom: 1px solid #d4af37; border-right: 1px solid #d4af37; }
-
-/* ── Fade animations ── */
-@keyframes fadeSlideDown {
-  from { opacity: 0; transform: translateY(-18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes screenFadeOut {
-  0%   { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.04); pointer-events: none; }
-}
-
-/* ── Tap-to-start prompt ── */
-.ls-tap-prompt {
-  position: absolute;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  z-index: 10;
-  animation: tapPulse 1.4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.ls-tap-icon {
-  font-size: 32px;
-  filter: drop-shadow(0 0 12px rgba(255, 220, 50, 0.8));
-}
-
-.ls-tap-text {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 14px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(212, 175, 55, 0.85);
-}
-
-@keyframes tapPulse {
-  0%, 100% { opacity: 1;   transform: translateX(-50%) translateY(0);   }
-  50%       { opacity: 0.5; transform: translateX(-50%) translateY(-6px); }
-}
-
-/* ── Thunder flash overlay ── */
-.ls-thunder-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(180, 200, 255, 0);
-  pointer-events: none;
-  transition: background 0.05s ease;
-  z-index: 1;
-}
-.ls-thunder-overlay.active {
-  background: rgba(180, 200, 255, 0.18);
-  transition: background 0s;
-}
-
-/* Flash the whole screen white-blue on thunder */
-.ls-flash {
-  animation: screenFadeOut 0.8s ease 3.2s forwards, thunderFlash 0.12s ease !important;
-}
-@keyframes thunderFlash {
-  0%   { filter: brightness(1); }
-  30%  { filter: brightness(2.5) saturate(0.4); }
-  60%  { filter: brightness(1.6); }
-  100% { filter: brightness(1); }
-}
-
-/* ── Lightning bolt container ── */
-.ls-lightning-container {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.ls-bolt {
-  position: absolute;
-  top: -10px;
-  opacity: 0;
-  animation: boltStrike var(--bolt-dur, 0.12s) ease-out var(--bolt-delay, 0s) 3 both;
-  filter: drop-shadow(0 0 8px #ffe066) drop-shadow(0 0 20px rgba(180, 140, 255, 0.8));
-}
-
-@keyframes boltStrike {
-  0%   { opacity: 0;   transform: scaleY(0);    transform-origin: top; }
-  10%  { opacity: 1;   transform: scaleY(1);    transform-origin: top; }
-  60%  { opacity: 0.8; transform: scaleY(1);    transform-origin: top; }
-  100% { opacity: 0;   transform: scaleY(1);    transform-origin: top; }
-}
-
-/* ── Mobile ── */
-@media (max-width: 640px) {
-  .ls-corner--tl,
-  .ls-corner--tr,
-  .ls-corner--bl,
-  .ls-corner--br { width: 36px; height: 36px; top: 20px; left: 20px; }
-  .ls-corner--tr { top: 20px; left: auto; right: 20px; }
-  .ls-corner--bl { top: auto; bottom: 20px; left: 20px; }
-  .ls-corner--br { top: auto; bottom: 20px; left: auto; right: 20px; }
-  .ls-progress-track { width: 200px; }
-  .ls-ornament-line { width: 50px; }
+@media (max-width:640px) {
+  .ls-corner--tl,.ls-corner--tr,.ls-corner--bl,.ls-corner--br{width:36px;height:36px;top:20px;left:20px}
+  .ls-corner--tr{top:20px;left:auto;right:20px} .ls-corner--bl{top:auto;bottom:20px;left:20px} .ls-corner--br{top:auto;bottom:20px;left:auto;right:20px}
+  .ls-progress-track{width:200px} .ls-ornament-line{width:50px}
 }

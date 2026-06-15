@@ -9,7 +9,7 @@ import Checkout      from './pages/Checkout'
 
 export default function App() {
   return (
-    <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>
+    <div style={{ position:'relative', zIndex:1, minHeight:'100vh' }}>
       <Navbar />
       <Routes>
         <Route path="/"            element={<Home />} />
@@ -19,8 +19,8 @@ export default function App() {
         <Route path="/signup"      element={<Signup />} />
         <Route path="/checkout"    element={<Checkout />} />
         <Route path="*"            element={
-          <div className="container empty-state" style={{ minHeight: '70vh' }}>
-            <span style={{ fontSize: 64 }}>🌀</span>
+          <div className="container empty-state" style={{ minHeight:'70vh' }}>
+            <span style={{ fontSize:64 }}>🌀</span>
             <h2>404 — Page not found</h2>
             <a href="/" className="btn btn-primary">Go Home</a>
           </div>

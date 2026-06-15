@@ -1,15 +1,15 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { getProducts, getCategories } from '../api/productApi'
 import ProductCard from '../components/ProductCard'
 
 const SORT_OPTIONS = [
-  { label: 'Default',         value: 'default' },
-  { label: 'Price: Low–High', value: 'price_asc' },
-  { label: 'Price: High–Low', value: 'price_desc' },
-  { label: 'Top Rated',       value: 'rating' },
-  { label: 'Most Reviews',    value: 'reviews' },
+  { label:'Default',         value:'default' },
+  { label:'Price: Low–High', value:'price_asc' },
+  { label:'Price: High–Low', value:'price_desc' },
+  { label:'Top Rated',       value:'rating' },
+  { label:'Most Reviews',    value:'reviews' },
 ]
 const CAT_ICONS = { All:'🌟', Electronics:'⚡', Fashion:'👟', Home:'🏠', Sports:'🏋️' }
 
@@ -28,47 +28,37 @@ export default function Home() {
 
   const heroRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY     = useTransform(scrollYProgress, [0, 1], [0, 120])
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
+  const heroY     = useTransform(scrollYProgress, [0,1], [0, 120])
+  const heroScale = useTransform(scrollYProgress, [0,1], [1, 1.08])
 
-  // ── Fetch categories once on mount ──────────────────────────────────
   useEffect(() => {
     getCategories()
       .then(res => setCategories(res.data))
-      .catch(() => setCategories(['All', 'Electronics', 'Fashion', 'Home', 'Sports']))
+      .catch(() => setCategories(['All','Electronics','Fashion','Home','Sports']))
   }, [])
 
-  // ── Fetch products whenever filters change ───────────────────────────
   useEffect(() => {
-    setLoading(true)
-    setError(null)
+    setLoading(true); setError(null)
     getProducts({ category, search, minPrice, maxPrice, sort })
       .then(res => { setProducts(res.data); setLoading(false) })
-      .catch(err => {
-        setError('Could not load products. Is the backend running?')
-        setLoading(false)
-      })
+      .catch(() => { setError('Backend offline — run: cd backend && npm run dev'); setLoading(false) })
   }, [category, search, minPrice, maxPrice, sort])
 
-  const resetFilters = () => {
-    setCategory('All'); setMinPrice(''); setMaxPrice('')
-    setSearch(''); setSort('default')
-  }
+  const resetFilters = () => { setCategory('All'); setMinPrice(''); setMaxPrice(''); setSearch(''); setSort('default') }
 
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight:'100vh' }}>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section ref={heroRef} style={{ position:'relative', minHeight:'clamp(520px,85vh,800px)', overflow:'hidden', display:'flex', alignItems:'center' }}>
         <motion.div style={{ position:'absolute', inset:0, y:heroY, scale:heroScale }}>
           <img src="/goku.webp" alt="Goku" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', filter:'brightness(0.55) saturate(1.2)' }} />
         </motion.div>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg, rgba(5,0,25,0.92) 0%, rgba(5,0,25,0.65) 55%, rgba(5,0,25,0.25) 100%)' }} />
-        <div style={{ position:'absolute', bottom:0, left:0, right:0, height:200, background:'linear-gradient(0deg, #050010 0%, transparent 100%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg,rgba(5,0,25,0.92) 0%,rgba(5,0,25,0.65) 55%,rgba(5,0,25,0.25) 100%)' }} />
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, height:200, background:'linear-gradient(0deg,#050010 0%,transparent 100%)' }} />
 
-        {/* Energy particles */}
         {[...Array(10)].map((_,i) => (
-          <motion.div key={i} style={{ position:'absolute', left:`${10+i*8}%`, top:`${20+(i%5)*14}%`, width:3, height:3, borderRadius:'50%', background: i%3===0?'var(--gold)':i%3===1?'#88ccff':'#ff8800', filter:'blur(1px)' }}
+          <motion.div key={i} style={{ position:'absolute', left:`${10+i*8}%`, top:`${20+(i%5)*14}%`, width:3, height:3, borderRadius:'50%', background:i%3===0?'var(--gold)':i%3===1?'#88ccff':'#ff8800', filter:'blur(1px)' }}
             animate={{ y:[-10,10,-10], opacity:[0.3,1,0.3] }}
             transition={{ duration:2.5+i*0.3, repeat:Infinity, ease:'easeInOut', delay:i*0.2 }}
           />
@@ -96,7 +86,7 @@ export default function Home() {
               onSubmit={e => e.preventDefault()}
               style={{ display:'flex', maxWidth:520, background:'rgba(255,255,255,0.07)', border:'1.5px solid rgba(245,200,66,0.3)', borderRadius:14, overflow:'hidden', backdropFilter:'blur(12px)' }}
             >
-              <span style={{ padding:'0 14px', fontSize:18, display:'flex', alignItems:'center', opacity:0.5 }}>🔍</span>
+              <span style={{ padding:'0 14px', fontSize:18, display:'flex', alignItems:'center', opacity:0.45 }}>🔍</span>
               <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
                 style={{ flex:1, padding:'14px 0', background:'transparent', border:'none', outline:'none', fontSize:14, color:'#fff' }} />
               <button type="submit" className="btn btn-primary" style={{ borderRadius:0, padding:'0 22px' }}>Search</button>
@@ -126,12 +116,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PRODUCTS SECTION ── */}
+      {/* PRODUCTS */}
       <div className="container" style={{ paddingTop:48, paddingBottom:64 }}>
-
-        {/* Category chips */}
         <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:28 }}>
-          {categories.map((c,i) => (
+          {categories.map(c => (
             <motion.button key={c} whileHover={{ scale:1.05 }} whileTap={{ scale:0.96 }}
               onClick={() => setCategory(c)}
               style={{ padding:'8px 18px', borderRadius:24, border:category===c?'1.5px solid var(--gold)':'1.5px solid rgba(245,200,66,0.2)', background:category===c?'rgba(245,200,66,0.18)':'rgba(8,0,32,0.6)', color:category===c?'var(--gold)':'rgba(200,180,255,0.8)', fontSize:13.5, fontWeight:category===c?700:500, cursor:'pointer', backdropFilter:'blur(8px)', display:'flex', alignItems:'center', gap:6 }}
@@ -140,8 +128,7 @@ export default function Home() {
         </div>
 
         <div style={{ display:'flex', gap:24, alignItems:'flex-start' }}>
-
-          {/* Desktop Sidebar */}
+          {/* Sidebar */}
           <aside className="sidebar-desktop" style={{ width:220, flexShrink:0, position:'sticky', top:80 }}>
             <div style={{ background:'rgba(8,2,35,0.82)', backdropFilter:'blur(16px)', border:'1px solid rgba(245,200,66,0.15)', borderRadius:16, padding:20 }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
@@ -187,18 +174,15 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Mobile filter panel */}
             <AnimatePresence>
               {filtersOpen && (
-                <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }}
-                  style={{ overflow:'hidden', marginBottom:16 }}
-                >
+                <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} style={{ overflow:'hidden', marginBottom:16 }}>
                   <div style={{ background:'rgba(8,2,35,0.9)', border:'1px solid rgba(245,200,66,0.15)', borderRadius:14, padding:18 }}>
                     <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:14 }}>
                       {categories.map(c => (
-                        <button key={c} onClick={() => setCategory(c)}
-                          style={{ padding:'6px 14px', borderRadius:20, border:category===c?'1.5px solid var(--gold)':'1.5px solid rgba(245,200,66,0.2)', background:category===c?'rgba(245,200,66,0.15)':'transparent', color:category===c?'var(--gold)':'rgba(200,180,255,0.7)', fontSize:13, cursor:'pointer', fontWeight:category===c?600:400 }}
-                        >{CAT_ICONS[c]} {c}</button>
+                        <button key={c} onClick={() => setCategory(c)} style={{ padding:'6px 14px', borderRadius:20, border:category===c?'1.5px solid var(--gold)':'1.5px solid rgba(245,200,66,0.2)', background:category===c?'rgba(245,200,66,0.15)':'transparent', color:category===c?'var(--gold)':'rgba(200,180,255,0.7)', fontSize:13, cursor:'pointer' }}>
+                          {CAT_ICONS[c]} {c}
+                        </button>
                       ))}
                     </div>
                     <div style={{ display:'flex', gap:8, alignItems:'center', flexWrap:'wrap' }}>
@@ -214,41 +198,33 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            {/* Loading state */}
             {loading && (
               <div style={{ display:'flex', justifyContent:'center', padding:'80px 0', flexDirection:'column', alignItems:'center', gap:16 }}>
                 <motion.div animate={{ rotate:360 }} transition={{ duration:1, repeat:Infinity, ease:'linear' }}
-                  style={{ width:44, height:44, borderRadius:'50%', border:'3px solid rgba(245,200,66,0.15)', borderTop:'3px solid var(--gold)' }}
-                />
+                  style={{ width:44, height:44, borderRadius:'50%', border:'3px solid rgba(245,200,66,0.15)', borderTop:'3px solid var(--gold)' }} />
                 <p style={{ color:'rgba(200,180,255,0.6)', fontSize:14 }}>Loading products...</p>
               </div>
             )}
 
-            {/* Error state */}
             {error && !loading && (
               <div className="empty-state">
                 <span className="icon">⚠️</span>
                 <h2>Backend not connected</h2>
-                <p>{error}</p>
-                <p style={{ fontSize:12, color:'rgba(200,180,255,0.4)', marginTop:4 }}>Run: <code style={{ background:'rgba(255,255,255,0.08)', padding:'2px 8px', borderRadius:4 }}>cd backend && npm run dev</code></p>
+                <p style={{ fontSize:13 }}>{error}</p>
               </div>
             )}
 
-            {/* Empty results */}
             {!loading && !error && products.length === 0 && (
               <div className="empty-state">
-                <span className="icon">🔍</span>
-                <h2>No products found</h2>
-                <p>Try different filters or search terms.</p>
+                <span className="icon">🔍</span><h2>No products found</h2>
                 <button className="btn btn-primary" onClick={resetFilters}>Clear Filters</button>
               </div>
             )}
 
-            {/* Products grid */}
             {!loading && !error && products.length > 0 && (
               <motion.div
                 key={`${category}-${sort}-${search}-${minPrice}-${maxPrice}`}
-                style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(200px,100%),1fr))', gap:16 }}
+                style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(200px,100%),1fr))', gap:16 }}
                 initial="hidden" animate="visible"
                 variants={{ visible:{ transition:{ staggerChildren:0.06 } }, hidden:{} }}
               >
@@ -262,10 +238,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width:900px) { .sidebar-desktop{display:none!important;} .mobile-filter-btn{display:flex!important;} }
-      `}</style>
+      <style>{`@media(max-width:900px){.sidebar-desktop{display:none!important;}.mobile-filter-btn{display:flex!important;}}`}</style>
     </div>
   )
 }

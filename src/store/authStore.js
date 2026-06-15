@@ -11,19 +11,12 @@ export const useAuthStore = create(
       loading:         false,
       error:           null,
 
-      // ── Login ────────────────────────────────────────────────────────
       login: async (email, password) => {
         set({ loading: true, error: null })
         try {
           const data = await loginUser(email, password)
-          // Save token to localStorage so axios interceptor picks it up
           localStorage.setItem('token', data.token)
-          set({
-            user:            data.user,
-            token:           data.token,
-            isAuthenticated: true,
-            loading:         false,
-          })
+          set({ user: data.user, token: data.token, isAuthenticated: true, loading: false })
           return { success: true }
         } catch (err) {
           const msg = err.response?.data?.message || 'Login failed'
@@ -32,18 +25,12 @@ export const useAuthStore = create(
         }
       },
 
-      // ── Signup ───────────────────────────────────────────────────────
       signup: async (name, email, password) => {
         set({ loading: true, error: null })
         try {
           const data = await registerUser(name, email, password)
           localStorage.setItem('token', data.token)
-          set({
-            user:            data.user,
-            token:           data.token,
-            isAuthenticated: true,
-            loading:         false,
-          })
+          set({ user: data.user, token: data.token, isAuthenticated: true, loading: false })
           return { success: true }
         } catch (err) {
           const msg = err.response?.data?.message || 'Registration failed'
@@ -52,7 +39,6 @@ export const useAuthStore = create(
         }
       },
 
-      // ── Logout ───────────────────────────────────────────────────────
       logout: () => {
         localStorage.removeItem('token')
         set({ user: null, token: null, isAuthenticated: false, error: null })
@@ -62,12 +48,7 @@ export const useAuthStore = create(
     }),
     {
       name: 'auth-storage',
-      // Only persist user + token, not loading/error
-      partialize: (state) => ({
-        user:            state.user,
-        token:           state.token,
-        isAuthenticated: state.isAuthenticated,
-      }),
+      partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
     }
   )
 )
