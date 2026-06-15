@@ -11,18 +11,9 @@ const { errorHandler, notFound } = require('./middleware/errorMiddleware')
 
 const app = express()
 
-// ── CORS — allow Netlify + localhost ────────────────────────────────────
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  process.env.FRONTEND_URL,   // set this on Render to your Netlify URL
-].filter(Boolean)
-
+// ── CORS — allow all origins in production (Netlify)
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) callback(null, true)
-    else callback(new Error('Not allowed by CORS'))
-  },
+  origin: true,   // allow any origin
   credentials: true,
 }))
 
