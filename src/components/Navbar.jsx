@@ -177,7 +177,7 @@ export default function Navbar() {
                     }}
                   >
                     {[
-                      { to:'/orders', icon:'📦', label:'My Orders' },
+                      { to:'/orders', icon:'📦', label:' Orders' },
                     ].map(item => (
                       <Link key={item.to} to={item.to} style={{
                         display:'flex', alignItems:'center', gap:10,

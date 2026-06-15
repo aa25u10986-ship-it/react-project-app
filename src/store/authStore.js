@@ -1,37 +1,73 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { loginUser, registerUser } from '../api/authApi'
 
 export const useAuthStore = create(
   persist(
     (set) => ({
-      user: null,
+      user:            null,
+      token:           null,
       isAuthenticated: false,
+      loading:         false,
+      error:           null,
 
-      login: (email, password) => {
-        // Mock auth — replace with real API
-        if (email && password.length >= 6) {
+      // ── Login ────────────────────────────────────────────────────────
+      login: async (email, password) => {
+        set({ loading: true, error: null })
+        try {
+          const data = await loginUser(email, password)
+          // Save token to localStorage so axios interceptor picks it up
+          localStorage.setItem('token', data.token)
           set({
-            user: { id: 1, name: email.split('@')[0], email },
+            user:            data.user,
+            token:           data.token,
             isAuthenticated: true,
+            loading:         false,
           })
           return { success: true }
+        } catch (err) {
+          const msg = err.response?.data?.message || 'Login failed'
+          set({ loading: false, error: msg })
+          return { success: false, error: msg }
         }
-        return { success: false, error: 'Invalid credentials' }
       },
 
-      signup: (name, email, password) => {
-        if (name && email && password.length >= 6) {
+      // ── Signup ───────────────────────────────────────────────────────
+      signup: async (name, email, password) => {
+        set({ loading: true, error: null })
+        try {
+          const data = await registerUser(name, email, password)
+          localStorage.setItem('token', data.token)
           set({
-            user: { id: Date.now(), name, email },
+            user:            data.user,
+            token:           data.token,
             isAuthenticated: true,
+            loading:         false,
           })
           return { success: true }
+        } catch (err) {
+          const msg = err.response?.data?.message || 'Registration failed'
+          set({ loading: false, error: msg })
+          return { success: false, error: msg }
         }
-        return { success: false, error: 'Please fill all fields (password min 6 chars)' }
       },
 
-      logout: () => set({ user: null, isAuthenticated: false }),
+      // ── Logout ───────────────────────────────────────────────────────
+      logout: () => {
+        localStorage.removeItem('token')
+        set({ user: null, token: null, isAuthenticated: false, error: null })
+      },
+
+      clearError: () => set({ error: null }),
     }),
-    { name: 'auth-storage' }
+    {
+      name: 'auth-storage',
+      // Only persist user + token, not loading/error
+      partialize: (state) => ({
+        user:            state.user,
+        token:           state.token,
+        isAuthenticated: state.isAuthenticated,
+      }),
+    }
   )
 )

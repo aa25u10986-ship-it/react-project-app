@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+// Cart store — local state (syncs with backend on checkout)
+// Items are stored locally for fast UI, sent to backend when order is placed
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -9,9 +11,11 @@ export const useCartStore = create(
       addToCart: (product) => {
         const existing = get().items.find(i => i.id === product.id)
         if (existing) {
-          set({ items: get().items.map(i =>
-            i.id === product.id ? { ...i, qty: i.qty + 1 } : i
-          )})
+          set({
+            items: get().items.map(i =>
+              i.id === product.id ? { ...i, qty: i.qty + 1 } : i
+            ),
+          })
         } else {
           set({ items: [...get().items, { ...product, qty: 1 }] })
         }
@@ -31,13 +35,9 @@ export const useCartStore = create(
 
       clearCart: () => set({ items: [] }),
 
-      get totalItems() {
-        return get().items.reduce((sum, i) => sum + i.qty, 0)
-      },
-
-      get totalPrice() {
-        return get().items.reduce((sum, i) => sum + i.price * i.qty, 0)
-      },
+      // Computed helpers
+      totalItems: () => get().items.reduce((s, i) => s + i.qty, 0),
+      totalPrice: () => get().items.reduce((s, i) => s + i.price * i.qty, 0),
     }),
     { name: 'cart-storage' }
   )

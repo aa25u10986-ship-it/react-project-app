@@ -214,7 +214,7 @@ export default function LoadingScreen({ onDone }) {
       {!started && (
         <div className="ls-tap-prompt" aria-live="polite">
           <span className="ls-tap-icon">🏎️</span>
-          <span className="ls-tap-text">Tap anywhere to start</span>
+          <span className="ls-tap-text">boom</span>
         </div>
       )}
 

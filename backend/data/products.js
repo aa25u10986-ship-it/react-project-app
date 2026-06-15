@@ -1,0 +1,17 @@
+// In-memory product database (replace with real DB later)
+const products = [
+  { id:1,  title:'Wireless Headphones',  price:1299, category:'Electronics', rating:4.5, reviews:128, stock:50,  image:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', description:'Premium sound quality with 30hr battery life and noise cancellation.' },
+  { id:2,  title:'Running Shoes',         price:2499, category:'Fashion',     rating:4.3, reviews:89,  stock:35,  image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400', description:'Lightweight and breathable shoes for everyday running and training.' },
+  { id:3,  title:'Smart Watch',           price:4999, category:'Electronics', rating:4.7, reviews:215, stock:20,  image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400', description:'Track fitness, notifications, and heart rate on your wrist.' },
+  { id:4,  title:'Backpack',              price:999,  category:'Fashion',     rating:4.2, reviews:67,  stock:60,  image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400', description:'Spacious 30L backpack with laptop compartment and USB charging port.' },
+  { id:5,  title:'Coffee Maker',          price:3499, category:'Home',        rating:4.6, reviews:143, stock:25,  image:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400', description:'Brew perfect coffee every morning with programmable settings.' },
+  { id:6,  title:'Yoga Mat',              price:599,  category:'Sports',      rating:4.4, reviews:92,  stock:80,  image:'https://images.unsplash.com/photo-1601925228869-53b4f6895ca4?w=400', description:'Non-slip eco-friendly mat for yoga, pilates, and exercise.' },
+  { id:7,  title:'Bluetooth Speaker',     price:1799, category:'Electronics', rating:4.3, reviews:178, stock:40,  image:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400', description:'360° sound, waterproof design, 12-hour playtime.' },
+  { id:8,  title:'Sunglasses',            price:799,  category:'Fashion',     rating:4.1, reviews:54,  stock:55,  image:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400', description:'UV400 protection with polarized lenses and lightweight frame.' },
+  { id:9,  title:'Air Purifier',          price:5999, category:'Home',        rating:4.8, reviews:201, stock:15,  image:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400', description:'HEPA filter removes 99.97% of airborne particles and allergens.' },
+  { id:10, title:'Resistance Bands Set',  price:449,  category:'Sports',      rating:4.5, reviews:113, stock:90,  image:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400', description:'5-band set for strength training and physical therapy at home.' },
+  { id:11, title:'Laptop Stand',          price:1199, category:'Electronics', rating:4.4, reviews:88,  stock:45,  image:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400', description:'Ergonomic aluminum stand adjustable to 6 height levels.' },
+  { id:12, title:'Water Bottle',          price:349,  category:'Sports',      rating:4.6, reviews:231, stock:100, image:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400', description:'Insulated stainless steel keeps drinks cold 24hr / hot 12hr.' },
+]
+
+module.exports = products
