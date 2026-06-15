@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+// Uses env variable on Netlify, falls back to localhost for development
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 })
 
@@ -12,7 +15,7 @@ API.interceptors.request.use((config) => {
   return config
 })
 
-// Handle 401 globally — clear token and redirect to login
+// Handle 401 globally
 API.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -11,27 +11,27 @@ const { errorHandler, notFound } = require('./middleware/errorMiddleware')
 
 const app = express()
 
-// ── Middleware ──────────────────────────────────────────────────────────
+// ── CORS — allow Netlify + localhost ────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.FRONTEND_URL,   // set this on Render to your Netlify URL
+].filter(Boolean)
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true)
+    else callback(new Error('Not allowed by CORS'))
+  },
   credentials: true,
 }))
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // ── Health check ────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'ShopEasy API is running',
-    version: '1.0.0',
-    endpoints: {
-      auth:     '/api/auth',
-      products: '/api/products',
-      cart:     '/api/cart',
-      orders:   '/api/orders',
-    },
-  })
+  res.json({ success: true, message: 'ShopEasy API is running ✅', version: '1.0.0' })
 })
 
 // ── API Routes ──────────────────────────────────────────────────────────
@@ -44,11 +44,11 @@ app.use('/api/orders',   orderRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-// ── Start Server ────────────────────────────────────────────────────────
+// ── Start ───────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🚀 ShopEasy Backend running on http://localhost:${PORT}`)
-  console.log(`📦 Products API  → http://localhost:${PORT}/api/products`)
-  console.log(`🔐 Auth API      → http://localhost:${PORT}/api/auth`)
-  console.log(`🛒 Cart API      → http://localhost:${PORT}/api/cart`)
-  console.log(`📋 Orders API    → http://localhost:${PORT}/api/orders\n`)
+  console.log(`\n🚀 ShopEasy Backend → http://localhost:${PORT}`)
+  console.log(`📦 Products  → http://localhost:${PORT}/api/products`)
+  console.log(`🔐 Auth      → http://localhost:${PORT}/api/auth`)
+  console.log(`🛒 Cart      → http://localhost:${PORT}/api/cart`)
+  console.log(`📋 Orders    → http://localhost:${PORT}/api/orders\n`)
 })
